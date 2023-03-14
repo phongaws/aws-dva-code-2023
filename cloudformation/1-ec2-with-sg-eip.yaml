@@ -3,6 +3,9 @@ Parameters:
   SecurityGroupDescription:
     Description: Security Group Description
     Type: String
+  KeyName:
+    Description: Key Pair for EC2
+    Type: 'AWS::EC2::KeyPair::KeyName'
 
 Resources:
   MyInstance:
@@ -14,6 +17,20 @@ Resources:
       SecurityGroups:
         - !Ref SSHSecurityGroup
         - !Ref ServerSecurityGroup
+      KeyName: !Ref KeyName
+      Tags:
+      - Key: Name
+        Value: d-ec2-DVA-EC2-from-cfn
+      - Key: SystemID
+        Value: DVA
+      UserData: 
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          yum update -y
+          yum install -y httpd.x86_64
+          systemctl start httpd.service
+          systemctl enable httpd.service
+          echo “Hello World from $(hostname -f)” > /var/www/html/index.html
 
   # an elastic IP for our instance
   MyEIP:
@@ -46,3 +63,8 @@ Resources:
         FromPort: 22
         ToPort: 22
         CidrIp: 192.168.1.1/32
+
+Outputs:
+  DemoInstanceId:
+    Description: Instance Id 
+    Value: !Ref MyInstance
