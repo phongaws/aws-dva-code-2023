@@ -1,7 +1,34 @@
 AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
 Description: A starter AWS Lambda function.
 Resources:
+  helloworldpython3:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      CodeUri: s3://phongnx-code-sam/4ed3427e18c4e6dc504252bebddc6ebb
+      Description: A starter AWS Lambda function.
+      MemorySize: 128
+      Timeout: 3
+      Environment:
+        Variables:
+          TABLE_NAME:
+            Ref: Table
+          REGION_NAME:
+            Ref: AWS::Region
+      Events:
+        HelloWorldSAMAPI:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: GET
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: Table
   Table:
+    Type: AWS::Serverless::SimpleTable
     Properties:
       PrimaryKey:
         Name: greeting
@@ -9,31 +36,3 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 2
-    Type: AWS::Serverless::SimpleTable
-  helloworldpython3:
-    Properties:
-      CodeUri: s3://stephane-code-sam/ea2521cec3989f886f87639ff492c07e
-      Description: A starter AWS Lambda function.
-      Environment:
-        Variables:
-          REGION_NAME:
-            Ref: AWS::Region
-          TABLE_NAME:
-            Ref: Table
-      Events:
-        HelloWorldSAMAPI:
-          Properties:
-            Method: GET
-            Path: /hello
-          Type: Api
-      Handler: app.lambda_handler
-      MemorySize: 128
-      Policies:
-      - DynamoDBCrudPolicy:
-          TableName:
-            Ref: Table
-      Runtime: python3.9
-      Timeout: 3
-      Tracing: Active
-    Type: AWS::Serverless::Function
-Transform: AWS::Serverless-2016-10-31

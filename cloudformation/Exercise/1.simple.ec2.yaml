@@ -1,0 +1,28 @@
+---
+Description: Create 1 EC2 (With parameter is list, Output is InstanceID).	
+
+Parameters:
+  InstanceTypeParameter:
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t2.micro
+      - t3.micro
+    Description: Enter t2.micro, t3.micro. Default is t2.micro.
+  KeyName:
+    Description: Key Pair for EC2
+    Type: 'AWS::EC2::KeyPair::KeyName'
+
+Resources:
+  MyInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone: us-east-1a
+      ImageId: ami-005f9685cb30f234b
+      InstanceType: !Ref InstanceTypeParameter
+      KeyName: !Ref KeyName
+
+Outputs:
+  MyInstance:
+    Description: A reference to the created EC2
+    Value: !Ref MyInstance

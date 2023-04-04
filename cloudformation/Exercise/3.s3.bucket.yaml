@@ -1,0 +1,22 @@
+Description: Create Simple S3 bucket
+Parameters:
+  EnvironmentName:
+    Description: An environment name that is prefixed to resource names
+    Type: String
+    AllowedValues:
+      - dev
+      - stg
+      - prod
+    Default: dev
+
+Resources:
+  S3Bucket:
+    Type: 'AWS::S3::Bucket'
+    Description: Demo bucket
+    Properties:
+      BucketName: !Sub ${EnvironmentName}-s3bucket-dva-demo
+
+Outputs:
+  S3Bucket:
+    Description: Bucket Created using this template.
+    Value: !Ref S3Bucket
