@@ -1,7 +1,7 @@
 Description: Create Simple S3 bucket
 Parameters:
   EnvironmentName:
-    Description: An environment name that is prefixed to resource names
+    Description: An Prefix name that is prefixed to resource names
     Type: String
     AllowedValues:
       - dev
@@ -9,12 +9,17 @@ Parameters:
       - prod
     Default: dev
 
+  BucketPrefix:
+    Description: An Prefix name that is prefixed to resource names
+    Type: String
+    Default: your-name
+
 Resources:
   S3Bucket:
     Type: 'AWS::S3::Bucket'
     Description: Demo bucket
     Properties:
-      BucketName: !Sub ${EnvironmentName}-s3bucket-dva-demo
+      BucketName: !Sub ${EnvironmentName}-${BucketPrefix}-s3-dva-cfn-demo
 
 Outputs:
   S3Bucket:

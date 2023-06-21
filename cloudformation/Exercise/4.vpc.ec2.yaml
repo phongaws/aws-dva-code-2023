@@ -191,7 +191,6 @@ Resources:
     Properties:
       ImageId: ami-0c02fb55956c7d316
       InstanceType: t2.micro
-      PrivateIpAddress: 10.0.1.4 # Nằm ở public subnet 1
       SecurityGroupIds: 
         - !Ref EC2SecurityGroup
       SubnetId: !Ref PublicSubnet1
